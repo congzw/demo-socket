@@ -13,13 +13,17 @@ namespace Demo.WinApp
             InitializeComponent();
             MyInitializeComponent();
         }
+
         public AsyncUiHelperForMessageEventBus AsyncMessageHelper { get; set; }
+
+        public UpdSendCtrl Ctrl { get; set; }
 
         private void MyInitializeComponent()
         {
             SetupUi();
 
             AsyncMessageHelper = this.txtMessage.CreateAsyncUiHelperForMessageEventBus(message => { this.txtMessage.AppendText(message); });
+            Ctrl = new UpdSendCtrl();
         }
         
         private void MainForm_Load(object sender, System.EventArgs e)
@@ -32,9 +36,8 @@ namespace Demo.WinApp
             var args = GetCallArgs();
             AsyncMessageHelper.AutoAppendLine = args.AutoLine;
             AsyncMessageHelper.WithDatePrefix = args.AutoDate;
-            AsyncMessageHelper.SafeUpdateUi("CallTraceApi()");
-
-            StartAsyncMessageDemo(args.Count, args.IntervalMs);
+            Ctrl.Send(args);
+            //StartAsyncMessageDemo(args.Count, args.IntervalMs);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
